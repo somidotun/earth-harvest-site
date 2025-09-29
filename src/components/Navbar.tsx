@@ -51,8 +51,11 @@ const Navbar = () => {
           </div>
 
           {/* Cart & Mobile Menu */}
-          <div className={`flex items-center gap-4 ${getTotalItems() >0 &&  "animate-bounce"}`}>
-            <Link to="/cart">
+          <div className="flex items-center gap-4 ">
+            <Link
+              to="/cart"
+              className={`${getTotalItems() > 0 && "animate-bounce"}`}
+            >
               <Button variant="ghost" size="icon" className="relative">
                 <ShoppingCart className="w-5 h-5" />
                 {getTotalItems() > 0 && (
@@ -68,7 +71,11 @@ const Navbar = () => {
               className="md:hidden text-foreground"
               onClick={() => setIsOpen(!isOpen)}
             >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
             </button>
           </div>
         </div>
