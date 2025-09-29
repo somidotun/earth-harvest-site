@@ -51,7 +51,7 @@ const Navbar = () => {
           </div>
 
           {/* Cart & Mobile Menu */}
-          <div className="flex items-center gap-4">
+          <div className={`flex items-center gap-4 ${getTotalItems() >0 &&  "animate-bounce"}`}>
             <Link to="/cart">
               <Button variant="ghost" size="icon" className="relative">
                 <ShoppingCart className="w-5 h-5" />
