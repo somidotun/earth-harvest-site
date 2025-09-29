@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { ShoppingCart } from "lucide-react";
+import { useCart } from "@/contexts/CartContext";
 import vegetablesImg from "@/assets/vegetables.jpg";
 import fruitsImg from "@/assets/fruits.jpg";
 import grainsImg from "@/assets/grains.jpg";
@@ -28,6 +29,7 @@ const products = [
 const Products = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState([0, 20]);
+  const { addToCart } = useCart();
 
   const filteredProducts = products.filter((product) => {
     const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product.category);
@@ -140,6 +142,7 @@ const Products = () => {
                         <Button 
                           size="sm"
                           className="bg-primary hover:bg-primary-light text-primary-foreground"
+                          onClick={() => addToCart(product)}
                         >
                           <ShoppingCart className="w-4 h-4 mr-1" />
                           Add
