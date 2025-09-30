@@ -12,18 +12,90 @@ import fruitsImg from "@/assets/fruits.jpg";
 import grainsImg from "@/assets/grains.jpg";
 
 const products = [
-  { id: 1, name: "Organic Tomatoes", category: "vegetables", price: 4.99, image: vegetablesImg },
-  { id: 2, name: "Fresh Carrots", category: "vegetables", price: 3.49, image: vegetablesImg },
-  { id: 3, name: "Leafy Greens Mix", category: "vegetables", price: 5.99, image: vegetablesImg },
-  { id: 4, name: "Sweet Peppers", category: "vegetables", price: 6.49, image: vegetablesImg },
-  { id: 5, name: "Organic Apples", category: "fruits", price: 7.99, image: fruitsImg },
-  { id: 6, name: "Fresh Strawberries", category: "fruits", price: 8.99, image: fruitsImg },
-  { id: 7, name: "Citrus Mix", category: "fruits", price: 9.49, image: fruitsImg },
-  { id: 8, name: "Organic Berries", category: "fruits", price: 10.99, image: fruitsImg },
-  { id: 9, name: "Whole Wheat", category: "grains", price: 12.99, image: grainsImg },
-  { id: 10, name: "Organic Oats", category: "grains", price: 8.49, image: grainsImg },
-  { id: 11, name: "Brown Rice", category: "grains", price: 11.99, image: grainsImg },
-  { id: 12, name: "Quinoa", category: "grains", price: 14.99, image: grainsImg },
+  {
+    id: 1,
+    name: "Organic Tomatoes",
+    category: "vegetables",
+    price: 4.99,
+    image: vegetablesImg,
+  },
+  {
+    id: 2,
+    name: "Fresh Carrots",
+    category: "vegetables",
+    price: 3.49,
+    image: vegetablesImg,
+  },
+  {
+    id: 3,
+    name: "Leafy Greens Mix",
+    category: "vegetables",
+    price: 5.99,
+    image: vegetablesImg,
+  },
+  {
+    id: 4,
+    name: "Sweet Peppers",
+    category: "vegetables",
+    price: 6.49,
+    image: vegetablesImg,
+  },
+  {
+    id: 5,
+    name: "Organic Apples",
+    category: "fruits",
+    price: 7.99,
+    image: fruitsImg,
+  },
+  {
+    id: 6,
+    name: "Fresh Strawberries",
+    category: "fruits",
+    price: 8.99,
+    image: fruitsImg,
+  },
+  {
+    id: 7,
+    name: "Citrus Mix",
+    category: "fruits",
+    price: 9.49,
+    image: fruitsImg,
+  },
+  {
+    id: 8,
+    name: "Organic Berries",
+    category: "fruits",
+    price: 10.99,
+    image: fruitsImg,
+  },
+  {
+    id: 9,
+    name: "Whole Wheat",
+    category: "grains",
+    price: 12.99,
+    image: grainsImg,
+  },
+  {
+    id: 10,
+    name: "Organic Oats",
+    category: "grains",
+    price: 8.49,
+    image: grainsImg,
+  },
+  {
+    id: 11,
+    name: "Brown Rice",
+    category: "grains",
+    price: 11.99,
+    image: grainsImg,
+  },
+  {
+    id: 12,
+    name: "Quinoa",
+    category: "grains",
+    price: 14.99,
+    image: grainsImg,
+  },
 ];
 
 const Products = () => {
@@ -32,21 +104,26 @@ const Products = () => {
   const { addToCart } = useCart();
 
   const filteredProducts = products.filter((product) => {
-    const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product.category);
-    const priceMatch = product.price >= priceRange[0] && product.price <= priceRange[1];
+    const categoryMatch =
+      selectedCategories.length === 0 ||
+      selectedCategories.includes(product.category);
+    const priceMatch =
+      product.price >= priceRange[0] && product.price <= priceRange[1];
     return categoryMatch && priceMatch;
   });
 
   const toggleCategory = (category: string) => {
     setSelectedCategories((prev) =>
-      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
     );
   };
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      
+
       <main className="flex-1 bg-background">
         {/* Page Header */}
         <div className="bg-muted/30 py-12 border-b border-border">
@@ -55,7 +132,8 @@ const Products = () => {
               Our Products
             </h1>
             <p className="text-muted-foreground max-w-2xl">
-              Browse our complete collection of fresh, organic agricultural products
+              Browse our complete collection of fresh, organic agricultural
+              products
             </p>
           </div>
         </div>
@@ -67,10 +145,12 @@ const Products = () => {
               <Card className="sticky top-20 border-border">
                 <CardContent className="p-6">
                   <h3 className="font-semibold text-lg mb-4">Filters</h3>
-                  
+
                   {/* Categories */}
                   <div className="mb-6">
-                    <h4 className="font-medium text-sm mb-3 text-foreground">Categories</h4>
+                    <h4 className="font-medium text-sm mb-3 text-foreground">
+                      Categories
+                    </h4>
                     <div className="space-y-3">
                       {["vegetables", "fruits", "grains"].map((category) => (
                         <div key={category} className="flex items-center gap-2">
@@ -92,7 +172,9 @@ const Products = () => {
 
                   {/* Price Range */}
                   <div>
-                    <h4 className="font-medium text-sm mb-3 text-foreground">Price Range</h4>
+                    <h4 className="font-medium text-sm mb-3 text-foreground">
+                      Price Range
+                    </h4>
                     <Slider
                       min={0}
                       max={20}
@@ -114,14 +196,15 @@ const Products = () => {
             <div className="flex-1">
               <div className="mb-6">
                 <p className="text-muted-foreground">
-                  Showing {filteredProducts.length} of {products.length} products
+                  Showing {filteredProducts.length} of {products.length}{" "}
+                  products
                 </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredProducts.map((product) => (
-                  <Card 
-                    key={product.id} 
+                  <Card
+                    key={product.id}
                     className="group overflow-hidden border-border hover:shadow-medium transition-smooth"
                   >
                     <div className="relative aspect-square overflow-hidden">
@@ -136,10 +219,13 @@ const Products = () => {
                         {product.name}
                       </h3>
                       <div className="flex items-center justify-between">
-                        <span className="text-2xl font-bold text-primary">
-                          ${product.price}
+                        <span className="text-2xl font-bold text-primary flex flex-row">
+                          {product.price}
+                          <p>
+                            <sub className="text-xs italic">HBAR</sub>
+                          </p>
                         </span>
-                        <Button 
+                        <Button
                           size="sm"
                           className="bg-primary hover:bg-primary-light text-primary-foreground"
                           onClick={() => addToCart(product)}
