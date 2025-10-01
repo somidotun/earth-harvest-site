@@ -38,16 +38,19 @@ const Categories = () => {
             Discover Our Offers
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Explore our wide range of products and services tailored to meet your agricultural needs
+            Explore our wide range of products and services tailored to meet
+            your agricultural needs
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {categories.map((category, index) => (
-            <Link to="/products" key={index}>
+            <div key={index}>
               <Card className="group cursor-pointer border-border hover:shadow-medium transition-smooth h-full">
                 <CardContent className="p-6 text-center">
-                  <div className={`w-16 h-16 mx-auto mb-4 rounded-2xl ${category.color} flex items-center justify-center group-hover:scale-110 transition-smooth`}>
+                  <div
+                    className={`w-16 h-16 mx-auto mb-4 rounded-2xl ${category.color} flex items-center justify-center group-hover:scale-110 transition-smooth`}
+                  >
                     <category.icon className="w-8 h-8" />
                   </div>
                   <h3 className="text-lg font-semibold text-foreground mb-2">
@@ -58,7 +61,7 @@ const Categories = () => {
                   </p>
                 </CardContent>
               </Card>
-            </Link>
+            </div>
           ))}
         </div>
       </div>

@@ -25,12 +25,6 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             <Link
-              to="/"
-              className="text-foreground hover:text-primary transition-smooth font-medium"
-            >
-              Home
-            </Link>
-            <Link
               to="/products"
               className="text-foreground hover:text-primary transition-smooth font-medium"
             >

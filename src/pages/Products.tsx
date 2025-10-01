@@ -10,6 +10,7 @@ import { useCart } from "@/contexts/CartContext";
 import vegetablesImg from "@/assets/vegetables.jpg";
 import fruitsImg from "@/assets/fruits.jpg";
 import grainsImg from "@/assets/grains.jpg";
+import { Link } from "react-router-dom";
 
 const products = [
   {
@@ -184,8 +185,13 @@ const Products = () => {
                       className="mb-2"
                     />
                     <div className="flex justify-between text-xs text-muted-foreground">
-                      <span>${priceRange[0]}</span>
-                      <span>${priceRange[1]}</span>
+                      <p className="italic text-xs">
+                        {priceRange[0]} <sub>HBAR</sub>
+                      </p>
+                      <p className="italic text-xs">
+                        {priceRange[1]} <sub>HBAR</sub>
+                      </p>
+                      {/* <p>${priceRange[1]}</p> */}
                     </div>
                   </div>
                 </CardContent>
@@ -196,7 +202,7 @@ const Products = () => {
             <div className="flex-1">
               <div className="mb-6">
                 <p className="text-muted-foreground">
-                  Showing {filteredProducts.length} of {products.length}{" "}
+                  Showing {filteredProducts.length} of {products.length}
                   products
                 </p>
               </div>

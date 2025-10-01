@@ -103,6 +103,10 @@ const Cart = () => {
     );
   }
 
+  const calculateItemTotal = (price: number, quantity: number) => {
+    return (price * quantity).toFixed(2);
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -137,7 +141,7 @@ const Cart = () => {
                           {item.name}
                         </h3>
                         <p className="text-primary font-bold mb-2  ">
-                          {getTotalPrice().toFixed(2)}
+                          {calculateItemTotal(item.price, item.quantity)}
                           <sub className="italic text-xs pl-1">HBAR</sub>
                         </p>
 
