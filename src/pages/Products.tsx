@@ -12,13 +12,14 @@ import fruitsImg from "@/assets/fruits.jpg";
 import grainsImg from "@/assets/grains.jpg";
 import { Link } from "react-router-dom";
 
-const products = [
+export const products = [
   {
     id: 1,
     name: "Organic Tomatoes",
     category: "vegetables",
     price: 4.99,
     image: vegetablesImg,
+    description: "Fresh, vine-ripened organic tomatoes grown without synthetic pesticides. Perfect for salads, sauces, and cooking. Rich in vitamins and antioxidants.",
   },
   {
     id: 2,
@@ -26,6 +27,7 @@ const products = [
     category: "vegetables",
     price: 3.49,
     image: vegetablesImg,
+    description: "Crisp and sweet organic carrots, packed with beta-carotene and fiber. Ideal for snacking, juicing, or adding to your favorite dishes.",
   },
   {
     id: 3,
@@ -33,6 +35,7 @@ const products = [
     category: "vegetables",
     price: 5.99,
     image: vegetablesImg,
+    description: "A nutritious blend of organic leafy greens including spinach, kale, and lettuce. Perfect for healthy salads and smoothies.",
   },
   {
     id: 4,
@@ -40,6 +43,7 @@ const products = [
     category: "vegetables",
     price: 6.49,
     image: vegetablesImg,
+    description: "Colorful, crunchy sweet bell peppers grown organically. High in vitamin C and perfect for grilling, stuffing, or eating raw.",
   },
   {
     id: 5,
@@ -47,6 +51,7 @@ const products = [
     category: "fruits",
     price: 7.99,
     image: fruitsImg,
+    description: "Crisp and juicy organic apples, naturally grown without chemicals. Great for snacking, baking, or making fresh juice.",
   },
   {
     id: 6,
@@ -54,6 +59,7 @@ const products = [
     category: "fruits",
     price: 8.99,
     image: fruitsImg,
+    description: "Sweet and succulent organic strawberries, hand-picked at peak ripeness. Rich in vitamin C and perfect for desserts or eating fresh.",
   },
   {
     id: 7,
@@ -61,6 +67,7 @@ const products = [
     category: "fruits",
     price: 9.49,
     image: fruitsImg,
+    description: "A vibrant mix of organic oranges, lemons, and grapefruits. Bursting with natural flavor and vitamin C for a healthy boost.",
   },
   {
     id: 8,
@@ -68,6 +75,7 @@ const products = [
     category: "fruits",
     price: 10.99,
     image: fruitsImg,
+    description: "Premium organic berry mix including blueberries, raspberries, and blackberries. Loaded with antioxidants and natural sweetness.",
   },
   {
     id: 9,
@@ -75,6 +83,7 @@ const products = [
     category: "grains",
     price: 12.99,
     image: grainsImg,
+    description: "Stone-ground organic whole wheat flour, rich in fiber and nutrients. Perfect for baking bread, pastries, and healthy meals.",
   },
   {
     id: 10,
@@ -82,6 +91,7 @@ const products = [
     category: "grains",
     price: 8.49,
     image: grainsImg,
+    description: "Premium organic rolled oats, ideal for a nutritious breakfast. High in fiber and great for oatmeal, baking, and smoothies.",
   },
   {
     id: 11,
@@ -89,6 +99,7 @@ const products = [
     category: "grains",
     price: 11.99,
     image: grainsImg,
+    description: "Wholesome organic brown rice with a nutty flavor. Rich in fiber and minerals, perfect as a healthy side dish or main ingredient.",
   },
   {
     id: 12,
@@ -96,6 +107,7 @@ const products = [
     category: "grains",
     price: 14.99,
     image: grainsImg,
+    description: "Organic quinoa, a complete protein source with all essential amino acids. Versatile and perfect for salads, bowls, and side dishes.",
   },
 ];
 
@@ -209,39 +221,41 @@ const Products = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredProducts.map((product) => (
-                  <Card
-                    key={product.id}
-                    className="group overflow-hidden border-border hover:shadow-medium transition-smooth"
-                  >
-                    <div className="relative aspect-square overflow-hidden">
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-full h-full object-cover transition-smooth group-hover:scale-110"
-                      />
-                    </div>
-                    <CardContent className="p-4">
-                      <h3 className="font-semibold text-foreground mb-2">
-                        {product.name}
-                      </h3>
-                      <div className="flex items-center justify-between">
-                        <span className="text-2xl font-bold text-primary flex flex-row">
-                          {product.price}
-                          <p>
-                            <sub className="text-xs italic">HBAR</sub>
-                          </p>
-                        </span>
-                        <Button
-                          size="sm"
-                          className="bg-primary hover:bg-primary-light text-primary-foreground"
-                          onClick={() => addToCart(product)}
-                        >
-                          <ShoppingCart className="w-4 h-4 mr-1" />
-                          Add
-                        </Button>
+                  <Link to={`/products/${product.id}`} key={product.id}>
+                    <Card className="group overflow-hidden border-border hover:shadow-medium transition-smooth h-full">
+                      <div className="relative aspect-square overflow-hidden">
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="w-full h-full object-cover transition-smooth group-hover:scale-110"
+                        />
                       </div>
-                    </CardContent>
-                  </Card>
+                      <CardContent className="p-4">
+                        <h3 className="font-semibold text-foreground mb-2">
+                          {product.name}
+                        </h3>
+                        <div className="flex items-center justify-between">
+                          <span className="text-2xl font-bold text-primary flex flex-row">
+                            {product.price}
+                            <p>
+                              <sub className="text-xs italic">HBAR</sub>
+                            </p>
+                          </span>
+                          <Button
+                            size="sm"
+                            className="bg-primary hover:bg-primary-light text-primary-foreground"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              addToCart(product);
+                            }}
+                          >
+                            <ShoppingCart className="w-4 h-4 mr-1" />
+                            Add
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 ))}
               </div>
             </div>
