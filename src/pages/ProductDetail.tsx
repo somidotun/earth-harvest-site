@@ -17,6 +17,9 @@ const ProductDetail = () => {
 
   const product = products.find((p) => p.id === Number(id));
 
+  const calculateItemTotal = (price: number, quantity: number) => {
+    return (price * quantity).toFixed(2);
+  };
   if (!product) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -39,6 +42,7 @@ const ProductDetail = () => {
   const handleAddToCart = () => {
     for (let i = 0; i < quantity; i++) {
       addToCart(product);
+      setQuantity(1);
     }
     toast({
       title: "Added to cart",
@@ -90,9 +94,9 @@ const ProductDetail = () => {
                 <span className="text-4xl font-bold text-primary">
                   {product.price}
                 </span>
-                <span className="text-lg italic text-muted-foreground">
-                  HBAR
-                </span>
+                <p className="text-base italic text-muted-foreground">
+                  <sub> HBAR</sub>
+                </p>
               </div>
 
               <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
@@ -104,6 +108,7 @@ const ProductDetail = () => {
                   <h3 className="font-semibold text-foreground mb-4">
                     Quantity
                   </h3>
+
                   <div className="flex items-center gap-4">
                     <Button
                       variant="outline"
@@ -125,6 +130,14 @@ const ProductDetail = () => {
                       <Plus className="w-4 h-4" />
                     </Button>
                   </div>
+
+                  <div className="pt-5">
+                    <p>
+                      Total price :
+                      <b>{calculateItemTotal(product.price, quantity)}</b>
+                      <sub className="text-xs italic"> HBAR</sub>
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
 
@@ -134,7 +147,7 @@ const ProductDetail = () => {
                 onClick={handleAddToCart}
               >
                 <ShoppingCart className="w-5 h-5 mr-2" />
-                Add {quantity} to Cart
+                Add to Cart
               </Button>
 
               <div className="mt-8 p-6 bg-muted/30 rounded-lg border border-border">
