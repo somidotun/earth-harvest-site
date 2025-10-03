@@ -7,9 +7,16 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { ShoppingCart } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
-import vegetablesImg from "@/assets/vegetables.jpg";
 import fruitsImg from "@/assets/fruits.jpg";
 import grainsImg from "@/assets/grains.jpg";
+import carrot from "@/assets/carrot.jpg";
+import tomatoes from "@/assets/tomatoes.jpg";
+import cucumber from "@/assets/cucumber.jpg";
+import sweetPepper from "@/assets/sweet pepper.jpg";
+import apples from "@/assets/apples.jpg";
+import orange from "@/assets/orange.jpg";
+import pineApples from "@/assets/pineApples.jpg";
+import waterMelon from "@/assets/waterMelon.jpg";
 import { Link } from "react-router-dom";
 
 export const products = [
@@ -18,72 +25,88 @@ export const products = [
     name: "Organic Tomatoes",
     category: "vegetables",
     price: 4.99,
-    image: vegetablesImg,
+    image: tomatoes,
+    quantity: "bowl",
+    quantities: "bowls",
     description:
       "Fresh, vine-ripened organic tomatoes grown without synthetic pesticides. Perfect for salads, sauces, and cooking. Rich in vitamins and antioxidants.",
   },
   {
     id: 2,
+    quantity: "bunch",
+    quantities: "bunches",
     name: "Fresh Carrots",
     category: "vegetables",
     price: 3.49,
-    image: vegetablesImg,
+    image: carrot,
     description:
       "Crisp and sweet organic carrots, packed with beta-carotene and fiber. Ideal for snacking, juicing, or adding to your favorite dishes.",
   },
   {
     id: 3,
-    name: "Leafy Greens Mix",
+    name: "cucumber",
+    quantity: "cucumber",
+    quantities: "cucumbers",
     category: "vegetables",
     price: 5.99,
-    image: vegetablesImg,
+    image: cucumber,
     description:
-      "A nutritious blend of organic leafy greens including spinach, kale, and lettuce. Perfect for healthy salads and smoothies.",
+      "Cucumber is a green, elongated vegetable with high water content, commonly eaten fresh in salads or pickled. It belongs to the gourd family and is known for its refreshing, mild flavor and cool, crisp texture.",
   },
   {
     id: 4,
     name: "Sweet Peppers",
     category: "vegetables",
     price: 6.49,
-    image: vegetablesImg,
+    quantity: "bowl",
+    quantities: "bowls",
+    image: sweetPepper,
     description:
       "Colorful, crunchy sweet bell peppers grown organically. High in vitamin C and perfect for grilling, stuffing, or eating raw.",
   },
   {
     id: 5,
-    name: "Organic Apples",
+    name: "Apples",
     category: "fruits",
     price: 7.99,
-    image: fruitsImg,
+    image: apples,
+    quantity: "apple",
+    quantities: "apples",
     description:
       "Crisp and juicy organic apples, naturally grown without chemicals. Great for snacking, baking, or making fresh juice.",
   },
   {
     id: 6,
-    name: "Fresh Strawberries",
+    name: "oranges",
     category: "fruits",
+    quantity: "bowl",
+    quantities: "bowls",
     price: 8.99,
-    image: fruitsImg,
+    image: orange,
     description:
-      "Sweet and succulent organic strawberries, hand-picked at peak ripeness. Rich in vitamin C and perfect for desserts or eating fresh.",
+      "An orange is a pocket of sunshine. Its bright, textured skin guards juicy segments within, each bursting with a vibrant mix of sweet and tangy flavor. A simple, bright joy.",
   },
   {
     id: 7,
-    name: "Citrus Mix",
+    name: "pineApples",
     category: "fruits",
-    price: 9.49,
-    image: fruitsImg,
+    price: 12,
+    quantity: "Pineapple",
+    quantities: "Pineapples",
+    image: pineApples,
     description:
-      "A vibrant mix of organic oranges, lemons, and grapefruits. Bursting with natural flavor and vitamin C for a healthy boost.",
+      "The pineapple is a spiky, golden fortress. Its tough, diamond-patterned skin protects an intensely sweet and tangy treasure within. To taste its vibrant yellow flesh is to experience a tropical sunset—a bold, juicy, and sun-warmed delight.",
   },
   {
     id: 8,
-    name: "Organic Berries",
+    name: "watermelon",
     category: "fruits",
-    price: 10.99,
-    image: fruitsImg,
+    price: 20.0,
+    quantity: "watermelon",
+    quantities: "watermelons",
+    image: waterMelon,
     description:
-      "Premium organic berry mix including blueberries, raspberries, and blackberries. Loaded with antioxidants and natural sweetness.",
+      "A green-striped cannonball of summer. Crack it open to a burst of red, sweet, and dripping juice. Pure, sun-ripened refreshment.",
   },
   {
     id: 9,
@@ -248,11 +271,18 @@ const Products = () => {
                         {product.name}
                       </h3>
                       <div className="flex items-center justify-between">
-                        <span className="text-2xl font-bold text-primary flex flex-row">
-                          {product.price}
-                          <p>
-                            <sub className="text-xs italic">HBAR</sub>
-                          </p>
+                        <span
+                          className="text-2xl font-bold text-primary 
+                        flex flex-row gap-2"
+                        >
+                          <div className="flex flex-row">
+                            <p className="text-base">{product.price}</p>
+
+                            <p>
+                              <sub className="text-xs italic">HBAR</sub>
+                            </p>
+                          </div>
+                          <p className="text-sm">per {product.quantity}</p>
                         </span>
                         <Button
                           size="sm"

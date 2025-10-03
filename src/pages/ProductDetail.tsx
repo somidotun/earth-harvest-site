@@ -131,13 +131,44 @@ const ProductDetail = () => {
                     </Button>
                   </div>
 
-                  <div className="pt-5">
+                  <div className="py-5">
                     <p>
                       Total price :
                       <b>{calculateItemTotal(product.price, quantity)}</b>
                       <sub className="text-xs italic"> HBAR</sub>
                     </p>
                   </div>
+                  {product.id !== 3 &&
+                    product.id !== 5 &&
+                    product.id !== 7 &&
+                    product.id !== 8 &&
+                    (quantity > 1 ? (
+                      <p>
+                        You are about to place an order for {quantity}{" "}
+                        {product.quantities} of {product.name}
+                      </p>
+                    ) : (
+                      <p>
+                        You are about to place an order for {quantity}{" "}
+                        {product.quantity} of {product.name}
+                      </p>
+                    ))}
+
+                  {(product.id === 3 ||
+                    product.id === 5 ||
+                    product.id === 7 ||
+                    product.id === 8) &&
+                    (quantity > 1 ? (
+                      <p>
+                        you are about to place a order for {quantity}{" "}
+                        {product.quantities}
+                      </p>
+                    ) : (
+                      <p>
+                        you are about to place a order for {quantity}{" "}
+                        {product.quantity}
+                      </p>
+                    ))}
                 </CardContent>
               </Card>
 
