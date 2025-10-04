@@ -142,6 +142,10 @@ const ProductDetail = () => {
                     product.id !== 5 &&
                     product.id !== 7 &&
                     product.id !== 8 &&
+                    product.id !== 9 &&
+                    product.id !== 10 &&
+                    product.id !== 11 &&
+                    product.id !== 12 &&
                     (quantity > 1 ? (
                       <p>
                         You are about to place an order for {quantity}{" "}
@@ -169,6 +173,25 @@ const ProductDetail = () => {
                         {product.quantity}
                       </p>
                     ))}
+
+                  {/* bags */}
+                  {product.id === 9 ||
+                    product.id === 10 ||
+                    product.id === 12 ||
+                    (product.id === 11 &&
+                      (quantity > 1 ? (
+                        <p>
+                          you are about to place a order for {quantity}{" "}
+                          {product.quantities} of 5kg of
+                          {product.name}
+                        </p>
+                      ) : (
+                        <p>
+                          you are about to place a order for {quantity}{" "}
+                          {product.quantity} of 5kg of
+                          {product.name}
+                        </p>
+                      )))}
                 </CardContent>
               </Card>
 

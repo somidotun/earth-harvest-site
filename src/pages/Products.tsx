@@ -7,7 +7,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { ShoppingCart } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
-import fruitsImg from "@/assets/fruits.jpg";
 import grainsImg from "@/assets/grains.jpg";
 import carrot from "@/assets/carrot.jpg";
 import tomatoes from "@/assets/tomatoes.jpg";
@@ -17,12 +16,16 @@ import apples from "@/assets/apples.jpg";
 import orange from "@/assets/orange.jpg";
 import pineApples from "@/assets/pineApples.jpg";
 import waterMelon from "@/assets/waterMelon.jpg";
+import wheat from "@/assets/wheat.jpg";
+import oat from "@/assets/oat.jpg";
+import rice from "@/assets/rice.jpg";
+import Quinoa from "@/assets/Quinoa.jpg";
 import { Link } from "react-router-dom";
 
 export const products = [
   {
     id: 1,
-    name: "Organic Tomatoes",
+    name: "Tomatoes",
     category: "vegetables",
     price: 4.99,
     image: tomatoes,
@@ -88,7 +91,7 @@ export const products = [
   },
   {
     id: 7,
-    name: "pineApples",
+    name: "Pineapples",
     category: "fruits",
     price: 12,
     quantity: "Pineapple",
@@ -110,37 +113,45 @@ export const products = [
   },
   {
     id: 9,
-    name: "Whole Wheat",
+    name: " Wheat",
     category: "grains",
+    quantity: "bag",
+    quantities: "bags",
     price: 12.99,
-    image: grainsImg,
+    image: wheat,
     description:
       "Stone-ground organic whole wheat flour, rich in fiber and nutrients. Perfect for baking bread, pastries, and healthy meals.",
   },
   {
     id: 10,
-    name: "Organic Oats",
+    name: "Oats",
     category: "grains",
+    quantity: "bag",
+    quantities: "bags",
     price: 8.49,
-    image: grainsImg,
+    image: oat,
     description:
       "Premium organic rolled oats, ideal for a nutritious breakfast. High in fiber and great for oatmeal, baking, and smoothies.",
   },
   {
     id: 11,
-    name: "Brown Rice",
+    name: "Rice",
     category: "grains",
-    price: 11.99,
-    image: grainsImg,
+    price: 15,
+    quantity: "bag",
+    quantities: "bags",
+    image: rice,
     description:
-      "Wholesome organic brown rice with a nutty flavor. Rich in fiber and minerals, perfect as a healthy side dish or main ingredient.",
+      "The rice grain is a vital global food source, which when milled produces nutritious brown rice or polished white rice.",
   },
   {
     id: 12,
     name: "Quinoa",
     category: "grains",
+    quantity: "bag",
+    quantities: "bags",
     price: 14.99,
-    image: grainsImg,
+    image: Quinoa,
     description:
       "Organic quinoa, a complete protein source with all essential amino acids. Versatile and perfect for salads, bowls, and side dishes.",
   },
