@@ -189,6 +189,14 @@ const Payment = () => {
                 <CardContent className="p-6">
                   <h3 className="font-semibold text-lg mb-4">Order Summary</h3>
 
+                  {/* Order ID */}
+                  {checkoutData.orderId && (
+                    <div className="mb-4 p-3 bg-muted/50 rounded-lg">
+                      <p className="text-xs text-muted-foreground mb-1">Order ID</p>
+                      <p className="font-mono text-sm font-semibold">{checkoutData.orderId}</p>
+                    </div>
+                  )}
+
                   <div className="space-y-3 mb-6">
                     <div className="space-y-2">
                       {cart.map((item) => (

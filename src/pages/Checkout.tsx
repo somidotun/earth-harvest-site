@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useCart } from "@/contexts/CartContext";
@@ -27,9 +28,16 @@ const checkoutSchema = z.object({
 
 type CheckoutFormValues = z.infer<typeof checkoutSchema>;
 
+const generateOrderId = () => {
+  const timestamp = Date.now();
+  const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+  return `ORD-${timestamp}-${random}`;
+};
+
 const Checkout = () => {
   const navigate = useNavigate();
   const { cart, getTotalPrice } = useCart();
+  const [orderId] = useState(() => generateOrderId());
 
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutSchema),
@@ -42,8 +50,13 @@ const Checkout = () => {
   });
 
   const onSubmit = (data: CheckoutFormValues) => {
-    // Store form data in sessionStorage and navigate to payment
-    sessionStorage.setItem("checkoutData", JSON.stringify(data));
+    // Store form data with order ID in sessionStorage and navigate to payment
+    const checkoutData = {
+      ...data,
+      orderId,
+      orderDate: new Date().toISOString(),
+    };
+    sessionStorage.setItem("checkoutData", JSON.stringify(checkoutData));
     navigate("/payment");
   };
 
@@ -170,6 +183,12 @@ const Checkout = () => {
               <Card className="border-border sticky top-20">
                 <CardContent className="p-6">
                   <h3 className="font-semibold text-lg mb-4">Order Summary</h3>
+                  
+                  {/* Order ID */}
+                  <div className="mb-4 p-3 bg-muted/50 rounded-lg">
+                    <p className="text-xs text-muted-foreground mb-1">Order ID</p>
+                    <p className="font-mono text-sm font-semibold">{orderId}</p>
+                  </div>
 
                   <div className="space-y-3 mb-6">
                     <div className="space-y-2">
