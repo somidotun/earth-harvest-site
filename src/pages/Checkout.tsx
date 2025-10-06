@@ -20,17 +20,23 @@ import {
 } from "@/components/ui/form";
 
 const checkoutSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters").max(100),
-  phone1: z.string().min(10, "Phone number must be at least 10 digits").max(15),
-  phone2: z.string().min(10, "Phone number must be at least 10 digits").max(15),
-  address: z.string().min(10, "Address must be at least 10 characters").max(500),
+  name: z.string().min(2, "Please input your full name").max(100),
+  phone1: z.string().min(10, "Please input your main phone number").max(15),
+  phone2: z
+    .string()
+    .min(10, "Please input your secondary phone number")
+    .max(15),
+  address: z.string().min(10, "Please input your ").max(500),
 });
 
 type CheckoutFormValues = z.infer<typeof checkoutSchema>;
 
 const generateOrderId = () => {
   const timestamp = Date.now();
-  const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+  console.log(timestamp);
+  const random = Math.floor(Math.random() * 10000)
+    .toString()
+    .padStart(4, "0");
   return `ORD-${timestamp}-${random}`;
 };
 
@@ -100,6 +106,50 @@ const Checkout = () => {
 
         <div className="container mx-auto px-4 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Order Summary */}
+            <div className="lg:col-span-1">
+              <Card className="border-border sticky top-20">
+                <CardContent className="p-6">
+                  <h3 className="font-semibold text-lg mb-4">Order Summary</h3>
+
+                  {/* Order ID */}
+                  <div className="mb-4 p-3 bg-muted/50 rounded-lg">
+                    <p className="text-xs text-muted-foreground mb-1">
+                      Order ID
+                    </p>
+                    <p className="font-mono text-sm font-semibold">{orderId}</p>
+                  </div>
+
+                  <div className="space-y-3 mb-6">
+                    <div className="space-y-2">
+                      {cart.map((item) => (
+                        <div
+                          key={item.id}
+                          className="flex justify-between text-sm"
+                        >
+                          <span className="text-muted-foreground">
+                            {item.name} x {item.quantity}
+                          </span>
+                          <span className="font-medium">
+                            {(item.price * item.quantity).toFixed(2)} HBAR
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="border-t border-border pt-3">
+                      <div className="flex justify-between font-bold text-lg">
+                        <span>Total</span>
+                        <span className="text-primary">
+                          {getTotalPrice().toFixed(2)} HBAR
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
             {/* Checkout Form */}
             <div className="lg:col-span-2">
               <Card className="border-border">
@@ -108,7 +158,10 @@ const Checkout = () => {
                 </CardHeader>
                 <CardContent>
                   <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    <form
+                      onSubmit={form.handleSubmit(onSubmit)}
+                      className="space-y-6"
+                    >
                       <FormField
                         control={form.control}
                         name="name"
@@ -174,45 +227,6 @@ const Checkout = () => {
                       </Button>
                     </form>
                   </Form>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Order Summary */}
-            <div className="lg:col-span-1">
-              <Card className="border-border sticky top-20">
-                <CardContent className="p-6">
-                  <h3 className="font-semibold text-lg mb-4">Order Summary</h3>
-                  
-                  {/* Order ID */}
-                  <div className="mb-4 p-3 bg-muted/50 rounded-lg">
-                    <p className="text-xs text-muted-foreground mb-1">Order ID</p>
-                    <p className="font-mono text-sm font-semibold">{orderId}</p>
-                  </div>
-
-                  <div className="space-y-3 mb-6">
-                    <div className="space-y-2">
-                      {cart.map((item) => (
-                        <div key={item.id} className="flex justify-between text-sm">
-                          <span className="text-muted-foreground">
-                            {item.name} x {item.quantity}
-                          </span>
-                          <span className="font-medium">
-                            {(item.price * item.quantity).toFixed(2)} HBAR
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="border-t border-border pt-3">
-                      <div className="flex justify-between font-bold text-lg">
-                        <span>Total</span>
-                        <span className="text-primary">
-                          {getTotalPrice().toFixed(2)} HBAR
-                        </span>
-                      </div>
-                    </div>
-                  </div>
                 </CardContent>
               </Card>
             </div>
