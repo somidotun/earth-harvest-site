@@ -1,85 +1,14 @@
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useCart } from "@/contexts/CartContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Minus, Plus, Trash2, Loader2 } from "lucide-react";
-import { toast } from "sonner";
-import {
-  Client,
-  AccountId,
-  PrivateKey,
-  Hbar,
-  TransferTransaction,
-} from "@hashgraph/sdk";
+import { Minus, Plus, Trash2 } from "lucide-react";
 
 const Cart = () => {
-  const { cart, removeFromCart, updateQuantity, clearCart, getTotalPrice } =
-    useCart();
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [accountId, setAccountId] = useState("");
-  const [privateKey, setPrivateKey] = useState("");
-
-  // Hedera testnet receiver account (replace with your actual account)
-  const RECEIVER_ACCOUNT = "0.0.1234567";
-
-  const handleCheckout = async () => {
-    if (!accountId || !privateKey) {
-      toast.error("Please enter your Hedera account details");
-      return;
-    }
-
-    if (cart.length === 0) {
-      toast.error("Your cart is empty");
-      return;
-    }
-
-    setIsProcessing(true);
-
-    try {
-      // Connect to Hedera testnet
-      const client = Client.forTestnet();
-      client.setOperator(
-        AccountId.fromString(accountId),
-        PrivateKey.fromString(privateKey)
-      );
-
-      const totalInHBAR = getTotalPrice();
-      // Convert USD to HBAR (example rate: 1 USD = 10 HBAR, adjust as needed)
-      const hbarAmount = totalInHBAR;
-
-      // Create transfer transaction
-      const transaction = new TransferTransaction()
-        .addHbarTransfer(AccountId.fromString(accountId), new Hbar(-hbarAmount))
-        .addHbarTransfer(
-          AccountId.fromString(RECEIVER_ACCOUNT),
-          new Hbar(hbarAmount)
-        )
-        .setTransactionMemo(`Order payment - ${cart.length} items`);
-
-      // Submit transaction
-      const txResponse = await transaction.execute(client);
-      const receipt = await txResponse.getReceipt(client);
-
-      if (receipt.status.toString() === "SUCCESS") {
-        toast.success(
-          `Payment successful! Transaction ID: ${txResponse.transactionId.toString()}`
-        );
-        clearCart();
-      } else {
-        toast.error("Payment failed. Please try again.");
-      }
-    } catch (error) {
-      console.error("Hedera payment error:", error);
-      toast.error(
-        "Payment failed. Please check your credentials and try again."
-      );
-    } finally {
-      setIsProcessing(false);
-    }
-  };
+  const navigate = useNavigate();
+  const { cart, removeFromCart, updateQuantity, getTotalPrice } = useCart();
 
   if (cart.length === 0) {
     return (
@@ -216,50 +145,12 @@ const Cart = () => {
                     </div>
                   </div>
 
-                  <div className="space-y-4 mb-6">
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">
-                        Hedera Account ID
-                      </label>
-                      <Input
-                        placeholder="0.0.XXXXXXX"
-                        value={accountId}
-                        onChange={(e) => setAccountId(e.target.value)}
-                        disabled={isProcessing}
-                      />
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">
-                        Private Key
-                      </label>
-                      <Input
-                        type="password"
-                        placeholder="302e020100300506032b..."
-                        value={privateKey}
-                        onChange={(e) => setPrivateKey(e.target.value)}
-                        disabled={isProcessing}
-                      />
-                    </div>
-                  </div>
-
                   <Button
-                    className="w-full bg-primary hover:bg-primary-light text-primary-foreground"
-                    onClick={handleCheckout}
-                    disabled={isProcessing}
+                    className="w-full"
+                    onClick={() => navigate("/checkout")}
                   >
-                    {isProcessing ? (
-                      <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Processing...
-                      </>
-                    ) : (
-                      "Pay with Hedera"
-                    )}
+                    Proceed to Checkout
                   </Button>
-
-                  <p className="text-xs text-muted-foreground mt-4 text-center">
-                    Secure payment via Hedera blockchain
-                  </p>
                 </CardContent>
               </Card>
             </div>

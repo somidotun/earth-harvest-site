@@ -1,0 +1,209 @@
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { useCart } from "@/contexts/CartContext";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
+const checkoutSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters").max(100),
+  phone1: z.string().min(10, "Phone number must be at least 10 digits").max(15),
+  phone2: z.string().min(10, "Phone number must be at least 10 digits").max(15),
+  address: z.string().min(10, "Address must be at least 10 characters").max(500),
+});
+
+type CheckoutFormValues = z.infer<typeof checkoutSchema>;
+
+const Checkout = () => {
+  const navigate = useNavigate();
+  const { cart, getTotalPrice } = useCart();
+
+  const form = useForm<CheckoutFormValues>({
+    resolver: zodResolver(checkoutSchema),
+    defaultValues: {
+      name: "",
+      phone1: "",
+      phone2: "",
+      address: "",
+    },
+  });
+
+  const onSubmit = (data: CheckoutFormValues) => {
+    // Store form data in sessionStorage and navigate to payment
+    sessionStorage.setItem("checkoutData", JSON.stringify(data));
+    navigate("/payment");
+  };
+
+  if (cart.length === 0) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <main className="flex-1 bg-background flex items-center justify-center">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-foreground mb-4">
+              Your cart is empty
+            </h2>
+            <p className="text-muted-foreground mb-8">
+              Add some products to get started
+            </p>
+            <Button asChild>
+              <a href="/products">Browse Products</a>
+            </Button>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+
+      <main className="flex-1 bg-background">
+        <div className="bg-muted/30 py-12 border-b border-border">
+          <div className="container mx-auto px-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4 font-['Playfair_Display']">
+              Checkout
+            </h1>
+            <p className="text-muted-foreground">
+              Fill in your details to complete your order
+            </p>
+          </div>
+        </div>
+
+        <div className="container mx-auto px-4 py-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Checkout Form */}
+            <div className="lg:col-span-2">
+              <Card className="border-border">
+                <CardHeader>
+                  <CardTitle>Delivery Information</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Full Name</FormLabel>
+                            <FormControl>
+                              <Input placeholder="John Doe" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="phone1"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Primary Phone Number</FormLabel>
+                            <FormControl>
+                              <Input placeholder="+1234567890" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="phone2"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Secondary Phone Number</FormLabel>
+                            <FormControl>
+                              <Input placeholder="+0987654321" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="address"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Delivery Address</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                placeholder="Enter your complete delivery address"
+                                className="min-h-[100px]"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <Button type="submit" className="w-full">
+                        Proceed to Payment
+                      </Button>
+                    </form>
+                  </Form>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Order Summary */}
+            <div className="lg:col-span-1">
+              <Card className="border-border sticky top-20">
+                <CardContent className="p-6">
+                  <h3 className="font-semibold text-lg mb-4">Order Summary</h3>
+
+                  <div className="space-y-3 mb-6">
+                    <div className="space-y-2">
+                      {cart.map((item) => (
+                        <div key={item.id} className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">
+                            {item.name} x {item.quantity}
+                          </span>
+                          <span className="font-medium">
+                            {(item.price * item.quantity).toFixed(2)} HBAR
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="border-t border-border pt-3">
+                      <div className="flex justify-between font-bold text-lg">
+                        <span>Total</span>
+                        <span className="text-primary">
+                          {getTotalPrice().toFixed(2)} HBAR
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <Footer />
+    </div>
+  );
+};
+
+export default Checkout;
