@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, ShoppingCart, Leaf } from "lucide-react";
+import { Menu, X, ShoppingCart, Leaf, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { getTotalItems } = useCart();
+  const { user, signOut } = useAuth();
 
   return (
     <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border shadow-soft">
@@ -45,7 +47,7 @@ const Navbar = () => {
           </div>
 
           {/* Cart & Mobile Menu */}
-          <div className="flex items-center gap-4 ">
+          <div className="flex items-center gap-2">
             <Link
               to="/cart"
               className={`${getTotalItems() > 0 && "animate-bounce"}`}
@@ -59,6 +61,21 @@ const Navbar = () => {
                 )}
               </Button>
             </Link>
+
+            {/* Auth Buttons - Desktop */}
+            <div className="hidden md:flex items-center gap-2">
+              {user ? (
+                <Button variant="ghost" size="icon" onClick={() => signOut()}>
+                  <LogOut className="w-5 h-5" />
+                </Button>
+              ) : (
+                <Link to="/auth">
+                  <Button variant="ghost" size="icon">
+                    <User className="w-5 h-5" />
+                  </Button>
+                </Link>
+              )}
+            </div>
 
             {/* Mobile Menu Button */}
             <button
@@ -106,6 +123,25 @@ const Navbar = () => {
               >
                 Contact
               </Link>
+              {user ? (
+                <button
+                  onClick={() => {
+                    signOut();
+                    setIsOpen(false);
+                  }}
+                  className="text-foreground hover:text-primary transition-smooth font-medium text-left"
+                >
+                  Sign Out
+                </button>
+              ) : (
+                <Link
+                  to="/auth"
+                  className="text-foreground hover:text-primary transition-smooth font-medium"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Sign In
+                </Link>
+              )}
             </div>
           </div>
         )}

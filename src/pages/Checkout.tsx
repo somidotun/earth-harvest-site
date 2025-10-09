@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -43,7 +44,14 @@ const generateOrderId = () => {
 const Checkout = () => {
   const navigate = useNavigate();
   const { cart, getTotalPrice } = useCart();
+  const { user, loading } = useAuth();
   const [orderId] = useState(() => generateOrderId());
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/auth");
+    }
+  }, [user, loading, navigate]);
 
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutSchema),
@@ -65,6 +73,14 @@ const Checkout = () => {
     sessionStorage.setItem("checkoutData", JSON.stringify(checkoutData));
     navigate("/payment");
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   if (cart.length === 0) {
     return (

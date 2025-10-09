@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Minus, Plus, Trash2 } from "lucide-react";
@@ -9,6 +10,7 @@ import { Minus, Plus, Trash2 } from "lucide-react";
 const Cart = () => {
   const navigate = useNavigate();
   const { cart, removeFromCart, updateQuantity, getTotalPrice } = useCart();
+  const { user } = useAuth();
 
   if (cart.length === 0) {
     return (
@@ -145,12 +147,21 @@ const Cart = () => {
                     </div>
                   </div>
 
-                  <Button
-                    className="w-full"
-                    onClick={() => navigate("/checkout")}
-                  >
-                    Proceed to Checkout
-                  </Button>
+                  {user ? (
+                    <Button
+                      className="w-full"
+                      onClick={() => navigate("/checkout")}
+                    >
+                      Proceed to Checkout
+                    </Button>
+                  ) : (
+                    <Button
+                      className="w-full"
+                      onClick={() => navigate("/auth")}
+                    >
+                      Sign in to Checkout
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             </div>
