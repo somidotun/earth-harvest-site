@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,6 +21,7 @@ import {
 const Payment = () => {
   const navigate = useNavigate();
   const { cart, clearCart, getTotalPrice } = useCart();
+  const { user } = useAuth();
   const [isProcessing, setIsProcessing] = useState(false);
   const [accountId, setAccountId] = useState("");
   const [privateKey, setPrivateKey] = useState("");
@@ -76,8 +79,51 @@ const Payment = () => {
       const receipt = await txResponse.getReceipt(client);
 
       if (receipt.status.toString() === "SUCCESS") {
+        const transactionId = txResponse.transactionId.toString();
+        
+        // Save order to database
+        if (user) {
+          try {
+            // Insert order
+            const { data: order, error: orderError } = await supabase
+              .from("orders")
+              .insert({
+                user_id: user.id,
+                customer_name: checkoutData.name,
+                phone1: checkoutData.phone1,
+                phone2: checkoutData.phone2,
+                address: checkoutData.address,
+                total_amount: getTotalPrice(),
+                payment_status: "completed",
+                transaction_id: transactionId,
+              })
+              .select()
+              .single();
+
+            if (orderError) throw orderError;
+
+            // Insert order items
+            const orderItems = cart.map((item) => ({
+              order_id: order.id,
+              product_name: item.name,
+              product_image: item.image,
+              quantity: item.quantity,
+              price: item.price,
+            }));
+
+            const { error: itemsError } = await supabase
+              .from("order_items")
+              .insert(orderItems);
+
+            if (itemsError) throw itemsError;
+          } catch (dbError) {
+            console.error("Database error:", dbError);
+            toast.error("Order saved to blockchain but failed to save to database");
+          }
+        }
+
         toast.success(
-          `Payment successful! Transaction ID: ${txResponse.transactionId.toString()}`
+          `Payment successful! Transaction ID: ${transactionId}`
         );
         sessionStorage.removeItem("checkoutData");
         clearCart();
