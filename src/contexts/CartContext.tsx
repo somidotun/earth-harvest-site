@@ -18,6 +18,8 @@ interface CartContextType {
   clearCart: () => void;
   getTotalItems: () => number;
   getTotalPrice: () => number;
+  getTransportationFee: () => number;
+  getFinalTotal: () => number;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -68,6 +70,14 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   };
 
+  const getTransportationFee = () => {
+    return getTotalPrice() * 0.05;
+  };
+
+  const getFinalTotal = () => {
+    return getTotalPrice() + getTransportationFee();
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -78,6 +88,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         clearCart,
         getTotalItems,
         getTotalPrice,
+        getTransportationFee,
+        getFinalTotal,
       }}
     >
       {children}

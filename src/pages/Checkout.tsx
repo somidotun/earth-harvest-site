@@ -43,7 +43,7 @@ const generateOrderId = () => {
 
 const Checkout = () => {
   const navigate = useNavigate();
-  const { cart, getTotalPrice } = useCart();
+  const { cart, getTotalPrice, getTransportationFee, getFinalTotal } = useCart();
   const { user, loading } = useAuth();
   const [orderId] = useState(() => generateOrderId());
 
@@ -153,12 +153,26 @@ const Checkout = () => {
                       ))}
                     </div>
 
-                    <div className="border-t border-border pt-3">
-                      <div className="flex justify-between font-bold text-lg">
-                        <span>Total</span>
-                        <span className="text-primary">
+                    <div className="border-t border-border pt-3 space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">Subtotal</span>
+                        <span className="font-medium">
                           {getTotalPrice().toFixed(2)} HBAR
                         </span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">Transportation Fee (5%)</span>
+                        <span className="font-medium">
+                          {getTransportationFee().toFixed(2)} HBAR
+                        </span>
+                      </div>
+                      <div className="border-t border-border pt-2">
+                        <div className="flex justify-between font-bold text-lg">
+                          <span>Total</span>
+                          <span className="text-primary">
+                            {getFinalTotal().toFixed(2)} HBAR
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>

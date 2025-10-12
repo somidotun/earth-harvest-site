@@ -9,7 +9,7 @@ import { Minus, Plus, Trash2 } from "lucide-react";
 
 const Cart = () => {
   const navigate = useNavigate();
-  const { cart, removeFromCart, updateQuantity, getTotalPrice } = useCart();
+  const { cart, removeFromCart, updateQuantity, getTotalPrice, getTransportationFee, getFinalTotal } = useCart();
   const { user } = useAuth();
 
   if (cart.length === 0) {
@@ -123,9 +123,17 @@ const Cart = () => {
                   <div className="space-y-3 mb-6">
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">Subtotal</span>
-
-                      <span className="text-primary font-medium flex flex-row">
+                      <span className="font-medium flex flex-row">
                         {getTotalPrice().toFixed(2)}
+                        <p className="text-xs italic">
+                          <sub>HBAR</sub>
+                        </p>
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Transportation Fee (5%)</span>
+                      <span className="font-medium flex flex-row">
+                        {getTransportationFee().toFixed(2)}
                         <p className="text-xs italic">
                           <sub>HBAR</sub>
                         </p>
@@ -135,15 +143,12 @@ const Cart = () => {
                       <div className="flex justify-between font-bold text-lg">
                         <span>Total (HBAR)</span>
                         <span className="text-primary flex flex-row ">
-                          {getTotalPrice().toFixed(2)}
+                          {getFinalTotal().toFixed(2)}
                           <p>
                             <sub className="text-xs italic">HBAR</sub>
                           </p>
                         </span>
                       </div>
-                      {/* <p className="text-xs text-muted-foreground mt-1">
-                        ≈ {getTotalPrice().toFixed(2)} HBAR
-                      </p> */}
                     </div>
                   </div>
 
