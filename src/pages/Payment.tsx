@@ -20,7 +20,13 @@ import {
 
 const Payment = () => {
   const navigate = useNavigate();
-  const { cart, clearCart, getTotalPrice, getTransportationFee, getFinalTotal } = useCart();
+  const {
+    cart,
+    clearCart,
+    getTotalPrice,
+    getTransportationFee,
+    getFinalTotal,
+  } = useCart();
   const { user } = useAuth();
   const [isProcessing, setIsProcessing] = useState(false);
   const [accountId, setAccountId] = useState("");
@@ -80,7 +86,7 @@ const Payment = () => {
 
       if (receipt.status.toString() === "SUCCESS") {
         const transactionId = txResponse.transactionId.toString();
-        
+
         // Save order to database
         if (user) {
           try {
@@ -118,13 +124,13 @@ const Payment = () => {
             if (itemsError) throw itemsError;
           } catch (dbError) {
             console.error("Database error:", dbError);
-            toast.error("Order saved to blockchain but failed to save to database");
+            toast.error(
+              "Order saved to blockchain but failed to save to database"
+            );
           }
         }
 
-        toast.success(
-          `Payment successful! Transaction ID: ${transactionId}`
-        );
+        toast.success(`Payment successful! Transaction ID: ${transactionId}`);
         sessionStorage.removeItem("checkoutData");
         clearCart();
         navigate("/products");
@@ -167,23 +173,31 @@ const Payment = () => {
             <div className="lg:col-span-2">
               <Card className="border-border mb-6">
                 <CardContent className="p-6">
-                  <h3 className="font-semibold text-lg mb-4">Delivery Information</h3>
+                  <h3 className="font-semibold text-lg mb-4">
+                    Delivery Information
+                  </h3>
                   <div className="space-y-3 text-sm">
                     <div>
                       <span className="text-muted-foreground">Name: </span>
                       <span className="font-medium">{checkoutData.name}</span>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Primary Phone: </span>
+                      <span className="text-muted-foreground">
+                        Primary Phone:{" "}
+                      </span>
                       <span className="font-medium">{checkoutData.phone1}</span>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Secondary Phone: </span>
+                      <span className="text-muted-foreground">
+                        Secondary Phone:{" "}
+                      </span>
                       <span className="font-medium">{checkoutData.phone2}</span>
                     </div>
                     <div>
                       <span className="text-muted-foreground">Address: </span>
-                      <span className="font-medium">{checkoutData.address}</span>
+                      <span className="font-medium">
+                        {checkoutData.address}
+                      </span>
                     </div>
                   </div>
                   <Button
@@ -199,7 +213,9 @@ const Payment = () => {
 
               <Card className="border-border">
                 <CardContent className="p-6">
-                  <h3 className="font-semibold text-lg mb-4">Hedera Payment Details</h3>
+                  <h3 className="font-semibold text-lg mb-4">
+                    Hedera Payment Details
+                  </h3>
                   <div className="space-y-4">
                     <div>
                       <label className="text-sm font-medium mb-2 block">
@@ -238,15 +254,22 @@ const Payment = () => {
                   {/* Order ID */}
                   {checkoutData.orderId && (
                     <div className="mb-4 p-3 bg-muted/50 rounded-lg">
-                      <p className="text-xs text-muted-foreground mb-1">Order ID</p>
-                      <p className="font-mono text-sm font-semibold">{checkoutData.orderId}</p>
+                      <p className="text-xs text-muted-foreground mb-1">
+                        Order ID
+                      </p>
+                      <p className="font-mono text-sm font-semibold">
+                        {checkoutData.orderId}
+                      </p>
                     </div>
                   )}
 
                   <div className="space-y-3 mb-6">
                     <div className="space-y-2">
                       {cart.map((item) => (
-                        <div key={item.id} className="flex justify-between text-sm">
+                        <div
+                          key={item.id}
+                          className="flex justify-between text-sm"
+                        >
                           <span className="text-muted-foreground">
                             {item.name} x {item.quantity}
                           </span>
@@ -265,7 +288,9 @@ const Payment = () => {
                         </span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Transportation Fee (5%)</span>
+                        <span className="text-muted-foreground">
+                          Transportation Fee
+                        </span>
                         <span className="font-medium">
                           {getTransportationFee().toFixed(2)} HBAR
                         </span>

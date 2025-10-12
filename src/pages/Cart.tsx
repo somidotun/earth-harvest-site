@@ -9,7 +9,14 @@ import { Minus, Plus, Trash2 } from "lucide-react";
 
 const Cart = () => {
   const navigate = useNavigate();
-  const { cart, removeFromCart, updateQuantity, getTotalPrice, getTransportationFee, getFinalTotal } = useCart();
+  const {
+    cart,
+    removeFromCart,
+    updateQuantity,
+    getTotalPrice,
+    getTransportationFee,
+    getFinalTotal,
+  } = useCart();
   const { user } = useAuth();
 
   if (cart.length === 0) {
@@ -131,7 +138,9 @@ const Cart = () => {
                       </span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Transportation Fee (5%)</span>
+                      <span className="text-muted-foreground">
+                        Transportation Fee
+                      </span>
                       <span className="font-medium flex flex-row">
                         {getTransportationFee().toFixed(2)}
                         <p className="text-xs italic">

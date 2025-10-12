@@ -43,7 +43,8 @@ const generateOrderId = () => {
 
 const Checkout = () => {
   const navigate = useNavigate();
-  const { cart, getTotalPrice, getTransportationFee, getFinalTotal } = useCart();
+  const { cart, getTotalPrice, getTransportationFee, getFinalTotal } =
+    useCart();
   const { user, loading } = useAuth();
   const [orderId] = useState(() => generateOrderId());
 
@@ -161,7 +162,9 @@ const Checkout = () => {
                         </span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Transportation Fee (5%)</span>
+                        <span className="text-muted-foreground">
+                          Transportation Fee
+                        </span>
                         <span className="font-medium">
                           {getTransportationFee().toFixed(2)} HBAR
                         </span>
