@@ -20,7 +20,7 @@ import {
 
 const Payment = () => {
   const navigate = useNavigate();
-  const { cart, clearCart, getTotalPrice } = useCart();
+  const { cart, clearCart, getTotalPrice, getTransportationFee, getFinalTotal } = useCart();
   const { user } = useAuth();
   const [isProcessing, setIsProcessing] = useState(false);
   const [accountId, setAccountId] = useState("");
@@ -62,7 +62,7 @@ const Payment = () => {
         PrivateKey.fromString(privateKey)
       );
 
-      const totalInHBAR = getTotalPrice();
+      const totalInHBAR = getFinalTotal();
       const hbarAmount = totalInHBAR;
 
       // Create transfer transaction
@@ -93,7 +93,7 @@ const Payment = () => {
                 phone1: checkoutData.phone1,
                 phone2: checkoutData.phone2,
                 address: checkoutData.address,
-                total_amount: getTotalPrice(),
+                total_amount: getFinalTotal(),
                 payment_status: "completed",
                 transaction_id: transactionId,
               })
@@ -257,12 +257,26 @@ const Payment = () => {
                       ))}
                     </div>
 
-                    <div className="border-t border-border pt-3">
-                      <div className="flex justify-between font-bold text-lg">
-                        <span>Total</span>
-                        <span className="text-primary">
+                    <div className="border-t border-border pt-3 space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">Subtotal</span>
+                        <span className="font-medium">
                           {getTotalPrice().toFixed(2)} HBAR
                         </span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">Transportation Fee (5%)</span>
+                        <span className="font-medium">
+                          {getTransportationFee().toFixed(2)} HBAR
+                        </span>
+                      </div>
+                      <div className="border-t border-border pt-2">
+                        <div className="flex justify-between font-bold text-lg">
+                          <span>Total</span>
+                          <span className="text-primary">
+                            {getFinalTotal().toFixed(2)} HBAR
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
