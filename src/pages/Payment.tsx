@@ -7,16 +7,17 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Loader2 } from "lucide-react";
+import { Loader2, Wallet } from "lucide-react";
 import { toast } from "sonner";
 import {
-  Client,
-  AccountId,
-  PrivateKey,
-  Hbar,
-  TransferTransaction,
-} from "@hashgraph/sdk";
+  HederaSessionEvent,
+  HederaJsonRpcMethod,
+  SignAndExecuteTransactionParams,
+  DAppConnector,
+  HederaChainId,
+} from "@hashgraph/hedera-wallet-connect";
+import { SessionTypes } from "@walletconnect/types";
+import { AccountId, Hbar, LedgerId, TransferTransaction } from "@hashgraph/sdk";
 
 const Payment = () => {
   const navigate = useNavigate();
@@ -29,11 +30,12 @@ const Payment = () => {
   } = useCart();
   const { user } = useAuth();
   const [isProcessing, setIsProcessing] = useState(false);
-  const [accountId, setAccountId] = useState("");
-  const [privateKey, setPrivateKey] = useState("");
   const [checkoutData, setCheckoutData] = useState<any>(null);
+  const [dAppConnector, setDAppConnector] = useState<DAppConnector | null>(null);
+  const [session, setSession] = useState<SessionTypes.Struct | null>(null);
+  const [accountId, setAccountId] = useState<string>("");
 
-  // Hedera testnet receiver account (replace with your actual account)
+  // Hedera testnet receiver account
   const RECEIVER_ACCOUNT = "0.0.9968729";
 
   useEffect(() => {
@@ -45,11 +47,63 @@ const Payment = () => {
       return;
     }
     setCheckoutData(JSON.parse(data));
+
+    // Initialize DApp Connector
+    const initWalletConnect = async () => {
+      const metadata = {
+        name: "AgroFresh",
+        description: "Fresh Farm Products Marketplace",
+        url: window.location.origin,
+        icons: [window.location.origin + "/favicon.ico"],
+      };
+
+      const connector = new DAppConnector(
+        metadata,
+        LedgerId.TESTNET,
+        "wc_AgroFresh_v1"
+      );
+
+      await connector.init();
+      setDAppConnector(connector);
+    };
+
+    initWalletConnect();
   }, [navigate]);
 
+  const connectWallet = async () => {
+    if (!dAppConnector) {
+      toast.error("Wallet connector not initialized");
+      return;
+    }
+
+    try {
+      const newSession = await dAppConnector.openModal();
+      setSession(newSession);
+
+      const accountIds = newSession.namespaces?.hedera?.accounts || [];
+      if (accountIds.length > 0) {
+        const accId = accountIds[0].split(":").pop() || "";
+        setAccountId(accId);
+        toast.success(`Wallet connected: ${accId}`);
+      }
+    } catch (error) {
+      console.error("Wallet connection error:", error);
+      toast.error("Failed to connect wallet");
+    }
+  };
+
+  const disconnectWallet = async () => {
+    if (dAppConnector && session) {
+      await dAppConnector.disconnectAll();
+      setSession(null);
+      setAccountId("");
+      toast.info("Wallet disconnected");
+    }
+  };
+
   const handlePayment = async () => {
-    if (!accountId || !privateKey) {
-      toast.error("Please enter your Hedera account details");
+    if (!dAppConnector || !session || !accountId) {
+      toast.error("Please connect your wallet first");
       return;
     }
 
@@ -61,31 +115,34 @@ const Payment = () => {
     setIsProcessing(true);
 
     try {
-      // Connect to Hedera testnet
-      const client = Client.forTestnet();
-      client.setOperator(
-        AccountId.fromString(accountId),
-        PrivateKey.fromString(privateKey)
-      );
-
       const totalInHBAR = getFinalTotal();
       const hbarAmount = totalInHBAR;
 
       // Create transfer transaction
       const transaction = new TransferTransaction()
-        .addHbarTransfer(AccountId.fromString(accountId), new Hbar(-hbarAmount))
+        .addHbarTransfer(
+          AccountId.fromString(accountId),
+          new Hbar(-hbarAmount)
+        )
         .addHbarTransfer(
           AccountId.fromString(RECEIVER_ACCOUNT),
           new Hbar(hbarAmount)
         )
         .setTransactionMemo(`Order payment - ${cart.length} items`);
 
-      // Submit transaction
-      const txResponse = await transaction.execute(client);
-      const receipt = await txResponse.getReceipt(client);
+      // Execute transaction through wallet
+      const params: SignAndExecuteTransactionParams = {
+        transactionList: Buffer.from(
+          transaction.toBytes()
+        ).toString("base64"),
+        signerAccountId: `hedera:testnet:${accountId}`,
+      };
 
-      if (receipt.status.toString() === "SUCCESS") {
-        const transactionId = txResponse.transactionId.toString();
+      const result = await dAppConnector.signAndExecuteTransaction(params);
+      
+      if (result) {
+        // Extract transaction ID from result
+        const transactionId = JSON.stringify(result).substring(0, 50);
 
         // Save order to database
         if (user) {
@@ -135,13 +192,11 @@ const Payment = () => {
         clearCart();
         navigate("/products");
       } else {
-        toast.error("Payment failed. Please try again.");
+        toast.error("Payment failed or was rejected");
       }
     } catch (error) {
       console.error("Hedera payment error:", error);
-      toast.error(
-        "Payment failed. Please check your credentials and try again."
-      );
+      toast.error("Payment failed. Please try again.");
     } finally {
       setIsProcessing(false);
     }
@@ -214,33 +269,45 @@ const Payment = () => {
               <Card className="border-border">
                 <CardContent className="p-6">
                   <h3 className="font-semibold text-lg mb-4">
-                    Hedera Payment Details
+                    Wallet Connection
                   </h3>
-                  <div className="space-y-4">
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">
-                        Hedera Account ID
-                      </label>
-                      <Input
-                        placeholder="0.0.XXXXXXX"
-                        value={accountId}
-                        onChange={(e) => setAccountId(e.target.value)}
-                        disabled={isProcessing}
-                      />
+                  {!session ? (
+                    <div className="space-y-4">
+                      <p className="text-sm text-muted-foreground">
+                        Connect your Hedera wallet to complete the payment securely.
+                      </p>
+                      <Button
+                        onClick={connectWallet}
+                        className="w-full"
+                        variant="outline"
+                      >
+                        <Wallet className="w-4 h-4 mr-2" />
+                        Connect Wallet
+                      </Button>
+                      <p className="text-xs text-muted-foreground">
+                        Supports HashPack, Blade, and other WalletConnect wallets
+                      </p>
                     </div>
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">
-                        Private Key
-                      </label>
-                      <Input
-                        type="password"
-                        placeholder="302e020100300506032b..."
-                        value={privateKey}
-                        onChange={(e) => setPrivateKey(e.target.value)}
-                        disabled={isProcessing}
-                      />
+                  ) : (
+                    <div className="space-y-4">
+                      <div className="p-4 bg-muted/50 rounded-lg">
+                        <p className="text-xs text-muted-foreground mb-1">
+                          Connected Account
+                        </p>
+                        <p className="font-mono text-sm font-semibold">
+                          {accountId}
+                        </p>
+                      </div>
+                      <Button
+                        onClick={disconnectWallet}
+                        variant="outline"
+                        size="sm"
+                        className="w-full"
+                      >
+                        Disconnect Wallet
+                      </Button>
                     </div>
-                  </div>
+                  )}
                 </CardContent>
               </Card>
             </div>
@@ -309,7 +376,7 @@ const Payment = () => {
                   <Button
                     className="w-full"
                     onClick={handlePayment}
-                    disabled={isProcessing}
+                    disabled={isProcessing || !session}
                   >
                     {isProcessing ? (
                       <>
