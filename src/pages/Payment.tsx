@@ -34,7 +34,7 @@ const Payment = () => {
   const [checkoutData, setCheckoutData] = useState<any>(null);
 
   // Hedera testnet receiver account (replace with your actual account)
-  const RECEIVER_ACCOUNT = "0.0.1234567";
+  const RECEIVER_ACCOUNT = "0.0.9968729";
 
   useEffect(() => {
     // Get checkout data from sessionStorage

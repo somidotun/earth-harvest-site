@@ -1,5 +1,14 @@
 import { Link } from "react-router-dom";
-import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, Leaf } from "lucide-react";
+import {
+  Facebook,
+  Twitter,
+  Instagram,
+  Linkedin,
+  Mail,
+  Phone,
+  MapPin,
+  Leaf,
+} from "lucide-react";
 
 const Footer = () => {
   return (
@@ -17,8 +26,8 @@ const Footer = () => {
               </span>
             </div>
             <p className="text-primary-foreground/80 text-sm leading-relaxed">
-              Providing premium organic agricultural products from sustainable farms. 
-              Quality you can trust, freshness you can taste.
+              Providing premium organic agricultural products from sustainable
+              farms. Quality you can trust, freshness you can taste.
             </p>
           </div>
 
@@ -27,22 +36,34 @@ const Footer = () => {
             <h3 className="font-semibold mb-4 text-lg">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="text-primary-foreground/80 hover:text-primary-foreground transition-smooth text-sm">
+                <Link
+                  to="/"
+                  className="text-primary-foreground/80 hover:text-primary-foreground transition-smooth text-sm"
+                >
                   Home
                 </Link>
               </li>
               <li>
-                <Link to="/products" className="text-primary-foreground/80 hover:text-primary-foreground transition-smooth text-sm">
+                <Link
+                  to="/products"
+                  className="text-primary-foreground/80 hover:text-primary-foreground transition-smooth text-sm"
+                >
                   Products
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="text-primary-foreground/80 hover:text-primary-foreground transition-smooth text-sm">
+                <Link
+                  to="/about"
+                  className="text-primary-foreground/80 hover:text-primary-foreground transition-smooth text-sm"
+                >
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-primary-foreground/80 hover:text-primary-foreground transition-smooth text-sm">
+                <Link
+                  to="/contact"
+                  className="text-primary-foreground/80 hover:text-primary-foreground transition-smooth text-sm"
+                >
                   Contact
                 </Link>
               </li>
@@ -53,16 +74,10 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4 text-lg">Contact Us</h3>
             <ul className="space-y-3">
-              <li className="flex items-start gap-2 text-sm">
-                <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                <span className="text-primary-foreground/80">
-                  123 Farm Road, Agricultural District
-                </span>
-              </li>
               <li className="flex items-center gap-2 text-sm">
                 <Phone className="w-4 h-4 flex-shrink-0" />
                 <span className="text-primary-foreground/80">
-                  +1 (555) 123-4567
+                  +2347080226490
                 </span>
               </li>
               <li className="flex items-center gap-2 text-sm">

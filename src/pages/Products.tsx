@@ -20,6 +20,7 @@ import wheat from "@/assets/wheat.jpg";
 import oat from "@/assets/oat.jpg";
 import rice from "@/assets/rice.jpg";
 import Quinoa from "@/assets/Quinoa.jpg";
+import eggs from "@/assets/eggs.jpg";
 import { Link } from "react-router-dom";
 
 export const products = [
@@ -104,7 +105,7 @@ export const products = [
     id: 8,
     name: "watermelon",
     category: "fruits",
-    price: 20.0,
+    price: 17.0,
     quantity: "watermelon",
     quantities: "watermelons",
     image: waterMelon,
@@ -144,6 +145,7 @@ export const products = [
     description:
       "The rice grain is a vital global food source, which when milled produces nutritious brown rice or polished white rice.",
   },
+
   {
     id: 12,
     name: "Quinoa",
@@ -154,6 +156,18 @@ export const products = [
     image: Quinoa,
     description:
       "Organic quinoa, a complete protein source with all essential amino acids. Versatile and perfect for salads, bowls, and side dishes.",
+  },
+
+  {
+    id: 13,
+    name: "Egg",
+    category: "Animal produce",
+    quantity: "create",
+    quantities: "creates",
+    price: 20.0,
+    image: eggs,
+    description:
+      "A perfect, portable package. A fragile, brown or white shell holding liquid gold.Crack it open to reveal the sun and the cloud: a golden yolk anchored in clear, slick white. A simple promise of breakfast, of life, of potential. The essential ingredient.",
   },
 ];
 
@@ -211,21 +225,26 @@ const Products = () => {
                       Categories
                     </h4>
                     <div className="space-y-3">
-                      {["vegetables", "fruits", "grains"].map((category) => (
-                        <div key={category} className="flex items-center gap-2">
-                          <Checkbox
-                            id={category}
-                            checked={selectedCategories.includes(category)}
-                            onCheckedChange={() => toggleCategory(category)}
-                          />
-                          <label
-                            htmlFor={category}
-                            className="text-sm capitalize cursor-pointer text-muted-foreground hover:text-foreground transition-smooth"
+                      {["vegetables", "fruits", "grains", "Animal produce"].map(
+                        (category) => (
+                          <div
+                            key={category}
+                            className="flex items-center gap-2"
                           >
-                            {category}
-                          </label>
-                        </div>
-                      ))}
+                            <Checkbox
+                              id={category}
+                              checked={selectedCategories.includes(category)}
+                              onCheckedChange={() => toggleCategory(category)}
+                            />
+                            <label
+                              htmlFor={category}
+                              className="text-sm capitalize cursor-pointer text-muted-foreground hover:text-foreground transition-smooth"
+                            >
+                              {category}
+                            </label>
+                          </div>
+                        )
+                      )}
                     </div>
                   </div>
 

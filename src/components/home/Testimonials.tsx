@@ -3,19 +3,22 @@ import { Quote } from "lucide-react";
 
 const testimonials = [
   {
-    quote: "Crop rotation is key to maintaining soil health. We rotate legumes with grains to naturally replenish nitrogen.",
-    author: "John Anderson",
-    role: "Senior Agricultural Specialist",
+    quote:
+      "You can't build a peaceful world on empty stomachs and human misery.",
+    author: "Norman Borlaug",
+    role: "The Father of the Green Revolution",
   },
   {
-    quote: "Investing in organic certification has increased our market value by 40%. Consumers trust quality.",
-    author: "Maria Santos",
-    role: "Organic Farm Owner",
+    quote:
+      "The ultimate goal of farming is not the growing of crops, but the cultivation and perfection of human beings.",
+    author: "Masanobu Fukuoka",
+    role: "Pioneer of Natural Farming",
   },
   {
-    quote: "Drip irrigation reduced our water usage by 60% while improving crop yields. Smart farming is the future.",
-    author: "David Chen",
-    role: "Sustainable Agriculture Expert",
+    quote:
+      "Our food should be our medicine, our medicine should be our food. But unless we restore the soil, we cannot restore the health of the people.",
+    author: "J.I. Rodale",
+    role: "Founder of the Organic Farming Movement in America",
   },
 ];
 
@@ -28,14 +31,15 @@ const Testimonials = () => {
             Expert Insights
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Learn from industry leaders and experienced farmers sharing their knowledge
+            Learn from industry leaders and experienced farmers sharing their
+            knowledge
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
-            <Card 
-              key={index} 
+            <Card
+              key={index}
               className="border-border hover:shadow-medium transition-smooth animate-fade-in"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
