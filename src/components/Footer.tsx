@@ -9,6 +9,7 @@ import {
   MapPin,
   Leaf,
 } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -85,6 +86,19 @@ const Footer = () => {
                 <span className="text-primary-foreground/80">
                   info@agrofresh.com
                 </span>
+              </li>
+
+              <li className="flex items-center gap-2 text-sm">
+                <FaGithub className="w-4 h-4 flex-shrink-0" />
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://github.com/somidotun/earth-harvest-site"
+                >
+                  <span className="text-primary-foreground/80">
+                    Github reposity
+                  </span>
+                </a>
               </li>
             </ul>
           </div>
