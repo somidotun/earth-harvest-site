@@ -95,9 +95,7 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   href="https://github.com/somidotun/earth-harvest-site"
                 >
-                  <span className="text-primary-foreground/80">
-                    Github reposity
-                  </span>
+                  <span className="text-primary-foreground/80">Github</span>
                 </a>
               </li>
             </ul>
