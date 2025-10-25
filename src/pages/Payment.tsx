@@ -196,7 +196,7 @@ const Payment = () => {
         // Redirect after 5 seconds
         setTimeout(() => {
           navigate("/");
-        }, 15000);
+        }, 30000);
       }
     } catch (error) {
       console.error("Payment error:", error);

@@ -43,10 +43,12 @@ const Orders = () => {
     try {
       const { data: ordersData, error: ordersError } = await supabase
         .from("orders")
-        .select(`
+        .select(
+          `
           *,
           order_items (*)
-        `)
+        `
+        )
         .eq("user_id", user?.id)
         .order("created_at", { ascending: false });
 
@@ -66,7 +68,9 @@ const Orders = () => {
         <Navbar />
         <main className="flex-1 flex items-center justify-center">
           <Card className="p-8 text-center">
-            <p className="text-muted-foreground">Please sign in to view your orders</p>
+            <p className="text-muted-foreground">
+              Please sign in to view your orders
+            </p>
           </Card>
         </main>
         <Footer />
@@ -145,14 +149,25 @@ const Orders = () => {
                   <CardContent className="pt-6">
                     <div className="space-y-4">
                       <div>
-                        <h4 className="font-semibold mb-2">Delivery Information</h4>
+                        <h4 className="font-semibold mb-2">
+                          Delivery Information
+                        </h4>
                         <div className="text-sm text-muted-foreground space-y-1">
-                          <p><span className="font-medium">Name:</span> {order.customer_name}</p>
-                          <p><span className="font-medium">Phone:</span> {order.phone1}</p>
-                          <p><span className="font-medium">Address:</span> {order.address}</p>
+                          <p>
+                            <span className="font-medium">Name:</span>{" "}
+                            {order.customer_name}
+                          </p>
+                          <p>
+                            <span className="font-medium">Phone:</span>{" "}
+                            {order.phone1}
+                          </p>
+                          <p>
+                            <span className="font-medium">Address:</span>{" "}
+                            {order.address}
+                          </p>
                         </div>
                       </div>
-                      
+
                       <div>
                         <h4 className="font-semibold mb-3">Order Items</h4>
                         <div className="space-y-3">
@@ -167,13 +182,16 @@ const Orders = () => {
                                 className="w-16 h-16 object-cover rounded"
                               />
                               <div className="flex-1">
-                                <p className="font-medium">{item.product_name}</p>
+                                <p className="font-medium">
+                                  {item.product_name}
+                                </p>
                                 <p className="text-sm text-muted-foreground">
                                   Quantity: {item.quantity}
                                 </p>
                               </div>
                               <p className="font-semibold">
-                                &#8358;{Number(item.price).toFixed(2)}
+                                &#8358;
+                                {Number(item.price * item.quantity).toFixed(2)}
                               </p>
                             </div>
                           ))}
