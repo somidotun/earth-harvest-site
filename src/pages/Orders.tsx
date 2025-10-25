@@ -137,7 +137,7 @@ const Orders = () => {
                           {order.payment_status}
                         </Badge>
                         <p className="text-2xl font-bold text-primary">
-                          ${Number(order.total_amount).toFixed(2)}
+                          &#8358;{Number(order.total_amount).toFixed(2)}
                         </p>
                       </div>
                     </div>
@@ -173,7 +173,7 @@ const Orders = () => {
                                 </p>
                               </div>
                               <p className="font-semibold">
-                                ${Number(item.price).toFixed(2)}
+                                &#8358;{Number(item.price).toFixed(2)}
                               </p>
                             </div>
                           ))}
