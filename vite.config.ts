@@ -18,6 +18,8 @@ export default defineConfig(({ mode }) => ({
   },
   define: {
     global: "globalThis",
+    "import.meta.env.VITE_SUPABASE_URL": JSON.stringify("https://hncnrjmdkbpszblrieka.supabase.co"),
+    "import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY": JSON.stringify("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhuY25yam1ka2Jwc3pibHJpZWthIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwMzg5NDYsImV4cCI6MjA3NTYxNDk0Nn0.j5j-MDRNM7GNphNmZjY-KqLp4rAxs2_Cu2HE0eyeMRs"),
   },
   optimizeDeps: {
     esbuildOptions: {
